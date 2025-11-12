@@ -30,5 +30,15 @@ enum JobStatus: string
             self::Failed => __('Sikertelen'),
         };
     }
+
+    public function badgeColor(): string
+    {
+        return match ($this) {
+            self::Completed => 'emerald',
+            self::Failed => 'rose',
+            self::InProgress => 'indigo',
+            self::Assigned => 'primary',
+        };
+    }
 }
 

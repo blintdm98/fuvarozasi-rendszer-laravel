@@ -54,7 +54,7 @@
                                 <div class="text-xs text-neutral-500">{{ $job->recipient_phone }}</div>
                             </td>
                             <td class="px-4 py-3">
-                                <x-badge :label="$job->status->label()" />
+                                <x-badge :label="$job->status->label()" :color="$job->status->badgeColor()" />
                             </td>
                             <td class="px-4 py-3">
                                 @if ($job->carrier)
