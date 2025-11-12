@@ -25,33 +25,19 @@
                     @endif
                 </div>
 
-                <x-dropdown align="right">
-                    <x-slot name="trigger">
-                        <button class="flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 py-1 text-sm font-medium shadow-sm hover:border-amber-400 dark:border-neutral-700 dark:bg-neutral-900">
-                            <x-icon name="user-circle" class="w-5 h-5" />
-                            <span>{{ auth()->user()->name }}</span>
-                        </button>
-                    </x-slot>
+                <button class="flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 py-1 text-sm font-medium shadow-sm hover:border-amber-400 dark:border-neutral-700 dark:bg-neutral-900">
+                    <x-icon name="user-circle" class="w-5 h-5" />
+                    <span>{{ auth()->user()->name }}</span>
+                </button>
 
-                    <x-slot name="content">
-                        <div class="px-4 py-3 text-sm">
-                            <p class="font-semibold">{{ auth()->user()->name }}</p>
-                            <p class="text-neutral-500">{{ auth()->user()->email }}</p>
-                        </div>
 
-                        <x-dropdown.item href="{{ route('dashboard') }}" icon="home" label="{{ __('Vezérlőpult') }}" />
-
-                        <div class="border-t border-neutral-200 dark:border-neutral-700"></div>
-
-                        <div class="px-2 py-1">
-                            <x-dropdown.item
-                                href="{{ route('logout') }}"
-                                icon="arrow-left-on-rectangle"
-                                label="{{ __('Kijelentkezés') }}"
-                            />
-                        </div>
-                    </x-slot>
-                </x-dropdown>
+                        <a
+                            href="{{ route('logout') }}"
+                            class="mt-1 flex items-center gap-2 px-4 py-2 text-sm font-medium text-rose-600 hover:bg-rose-50 hover:text-rose-700 dark:text-rose-400 dark:hover:bg-rose-500/10 dark:hover:text-rose-200"
+                        >
+                            <x-icon name="arrow-left-on-rectangle" class="h-4 w-4" />
+                            <span>{{ __('Kijelentkezés') }}</span>
+                        </a>
             @else
                 <div class="flex items-center gap-3">
                     <a href="{{ route('login') }}" class="text-sm font-medium text-neutral-700 hover:text-amber-600 dark:text-neutral-200">

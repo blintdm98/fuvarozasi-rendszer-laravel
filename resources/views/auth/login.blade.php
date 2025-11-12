@@ -45,14 +45,6 @@
             @enderror
         </div>
 
-        <div class="flex items-center justify-between text-sm">
-            <x-checkbox name="remember" label="{{ __('Emlékezz rám') }}" :checked="old('remember')" />
-
-            <a href="{{ route('home') }}" class="text-amber-600 hover:underline">
-                {{ __('Vissza a főoldalra') }}
-            </a>
-        </div>
-
         <x-button primary type="submit" class="w-full">
             {{ __('Belépés') }}
         </x-button>
