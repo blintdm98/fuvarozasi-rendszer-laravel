@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Livewire\Admin\Jobs\JobList;
 use App\Livewire\Carrier\Jobs\MyJobs;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +13,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('jobs', JobList::class)->name('jobs.index');
