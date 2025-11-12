@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Livewire\Admin\Jobs\AssignJob;
-use App\Livewire\Admin\Jobs\JobForm;
 use App\Livewire\Admin\Jobs\JobList;
 use App\Livewire\Carrier\Jobs\MyJobs;
 use Illuminate\Support\Facades\Route;
@@ -18,9 +16,6 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('jobs', JobList::class)->name('jobs.index');
-        Route::get('jobs/create', JobForm::class)->name('jobs.create');
-        Route::get('jobs/{job}/edit', JobForm::class)->name('jobs.edit');
-        Route::get('jobs/{job}/assign', AssignJob::class)->name('jobs.assign');
     });
 
     Route::prefix('carrier')->name('carrier.')->group(function () {
