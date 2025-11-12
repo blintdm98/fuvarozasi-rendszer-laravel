@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\JobStatus;
 use App\Models\Job;
+use App\Models\JobAlert;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -48,6 +49,8 @@ class JobService
 
     public function update(Job $job, array $attributes): Job
     {
+        $previousStatus = $job->status;
+
         $job->fill($attributes);
 
         if ($job->isDirty('status')) {
@@ -57,7 +60,13 @@ class JobService
 
         $job->save();
 
-        return $job->refresh();
+        $job->refresh();
+
+        if ($previousStatus !== JobStatus::Failed && $job->status === JobStatus::Failed) {
+            $this->createFailureAlert($job);
+        }
+
+        return $job;
     }
 
     public function delete(Job $job): void
@@ -86,6 +95,17 @@ class JobService
         return in_array($status, [JobStatus::Assigned, JobStatus::InProgress, JobStatus::Completed], true)
             ? now()
             : null;
+    }
+
+    protected function createFailureAlert(Job $job): void
+    {
+        JobAlert::create([
+            'job_id' => $job->id,
+            'message' => __('Sikertelen fuvar: :pickup → :delivery', [
+                'pickup' => $job->pickup_address,
+                'delivery' => $job->delivery_address,
+            ]),
+        ]);
     }
 }
 

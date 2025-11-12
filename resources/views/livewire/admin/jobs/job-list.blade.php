@@ -1,4 +1,49 @@
 <div class="space-y-6">
+    <x-modal-card
+        blur="md"
+        icon="exclamation-triangle"
+        title="{{ __('Sikertelen fuvarok') }}"
+        wire:model="showAlertModal"
+    >
+        @if (! empty($alerts))
+            <div class="space-y-4">
+                @foreach ($alerts as $alert)
+                    <div class="rounded-lg border border-rose-200 bg-rose-50/70 p-4 dark:border-rose-900/60 dark:bg-rose-950/40">
+                        <p class="font-semibold text-rose-700 dark:text-rose-300">
+                            {{ $alert['message'] }}
+                        </p>
+                        @if (! empty($alert['job']))
+                            <p class="text-sm text-neutral-600 dark:text-neutral-300">
+                                {{ $alert['job']['pickup'] ?? '—' }} →
+                                {{ $alert['job']['delivery'] ?? '—' }}
+                                <span class="ml-2 text-xs text-neutral-500 dark:text-neutral-400">
+                                    ({{ $alert['job']['status'] ?? '' }})
+                                </span>
+                            </p>
+                        @endif
+                        @if (! empty($alert['created_at']))
+                            <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                                {{ __('Érkezett: :date', ['date' => $alert['created_at']]) }}
+                            </p>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p class="text-sm text-neutral-600 dark:text-neutral-300">
+                {{ __('Jelenleg nincs figyelmeztetés.') }}
+            </p>
+        @endif
+
+        <x-slot name="footer">
+            <div class="flex justify-end">
+                <x-button primary icon="check" wire:click="acknowledgeAlerts">
+                    {{ __('Rendben') }}
+                </x-button>
+            </div>
+        </x-slot>
+    </x-modal-card>
+
     <div class="flex flex-col gap-4">
         <div>
             <h1 class="text-2xl font-semibold text-neutral-900 dark:text-white">

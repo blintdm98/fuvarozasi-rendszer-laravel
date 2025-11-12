@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Jobs;
 use App\Enums\JobStatus;
 use App\Livewire\Forms\JobForm;
 use App\Models\Job;
+use App\Models\JobAlert;
 use App\Models\User;
 use App\Services\CarrierService;
 use App\Services\JobService;
@@ -25,6 +26,10 @@ class JobList extends Component
     public array $carriers = [];
 
     public array $statusOptions = [];
+
+    public array $alerts = [];
+
+    public bool $showAlertModal = false;
 
     public bool $jobModal = false;
 
@@ -62,8 +67,8 @@ class JobList extends Component
 
         $this->refreshJobs();
         $this->refreshCarriers();
-        $this->refreshCarriers();
         $this->form->init();
+        $this->loadAlerts();
     }
 
     protected function loadJobs(): Collection
@@ -204,6 +209,44 @@ class JobList extends Component
         return view('livewire.admin.jobs.job-list', [
             'carriers' => $this->carriers,
             'statusOptions' => $this->statusOptions,
+            'alerts' => $this->alerts,
+            'showAlertModal' => $this->showAlertModal,
         ])->with('pageTitle', __('Fuvarfeladatok'));
+    }
+
+    protected function loadAlerts(): void
+    {
+        $alerts = JobAlert::query()
+            ->with('job')
+            ->whereNull('read_at')
+            ->latest()
+            ->get();
+
+        $this->alerts = $alerts->map(function (JobAlert $alert) {
+            return [
+                'id' => $alert->id,
+                'message' => $alert->message,
+                'created_at' => optional($alert->created_at)->format('Y.m.d H:i'),
+                'job' => $alert->job ? [
+                    'pickup' => $alert->job->pickup_address,
+                    'delivery' => $alert->job->delivery_address,
+                    'status' => $alert->job->status->label(),
+                ] : null,
+            ];
+        })->toArray();
+
+        $this->showAlertModal = ! empty($this->alerts);
+    }
+
+    public function acknowledgeAlerts(): void
+    {
+        if (! empty($this->alerts)) {
+            $ids = collect($this->alerts)->pluck('id');
+
+            JobAlert::whereIn('id', $ids)->update(['read_at' => now()]);
+        }
+
+        $this->alerts = [];
+        $this->showAlertModal = false;
     }
 }
