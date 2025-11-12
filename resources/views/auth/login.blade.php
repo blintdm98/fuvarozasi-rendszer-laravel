@@ -8,9 +8,7 @@
         @csrf
 
         @if ($errors->has('common'))
-            <x-alert negative>
-                {{ $errors->first('common') }}
-            </x-alert>
+            <x-alert negative title="{{ $errors->first('common') }}"/>
         @endif
 
         <div class="space-y-1.5">

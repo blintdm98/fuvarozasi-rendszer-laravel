@@ -36,7 +36,9 @@ class MyJobs extends Component
 
     public function mount(): void
     {
-        abort_unless(auth()->check() && auth()->user()->isCarrier(), 403);
+        if (! auth()->user()?->isCarrier()) {
+            redirect()->route('home')->send();
+        }
 
         $this->statusOptions = JobStatus::toArray();
         $this->refreshJobs();

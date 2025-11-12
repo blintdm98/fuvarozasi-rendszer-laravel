@@ -259,7 +259,7 @@
             </p>
 
             @if ($deleteJobLabel)
-                <x-alert icon="information-circle" title="{{ $deleteJobLabel }}" class="text-sm flex flex-row gap-3"></x-alert>
+                <x-alert icon="information-circle" title="{{ $deleteJobLabel }}" class="text-sm flex flex-row gap-3"/>
             @endif
 
             <div class="flex items-center justify-end gap-2">

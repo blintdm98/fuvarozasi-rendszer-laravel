@@ -57,7 +57,7 @@
                                 wire:loading.attr="disabled"
                                 :disabled="$job->status->isTerminal()"
                             >
-                                {{ __('Megerősítés') }}
+                                {{ __('Frissítés') }}
                             </x-button>
                         </div>
 

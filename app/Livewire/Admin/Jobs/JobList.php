@@ -61,7 +61,9 @@ class JobList extends Component
 
     public function mount(): void
     {
-        abort_unless(auth()->check() && auth()->user()->isAdmin(), 403);
+        if (! auth()->user()?->isAdmin()) {
+            redirect()->route('home')->send();
+        }
 
         $this->statusOptions = JobStatus::toArray();
 
